@@ -1,6 +1,6 @@
 const { connectMongo, disconnectMongo } = require("./common/mongodb/mongoDB");
 const expressServer = require("./expressServer");
-const { emailSchedule } = require("./batch/sendEmailOnTime");
+const { emailSchedule } = require("./batch/sendEmailSchedule");
 async function main() {
   const app = expressServer();
   const PORT = process.env.PORT || 3000;

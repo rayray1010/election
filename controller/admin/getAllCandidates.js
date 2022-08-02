@@ -20,5 +20,7 @@ exports.getAllCandidates = async function ({ electionId }) {
       },
     },
   ]);
+  if (!candidateInfo.length)
+    throw new NotFoundError(`找不到 id 為： ${electionId} 的選舉`);
   return candidateInfo;
 };

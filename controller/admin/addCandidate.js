@@ -3,11 +3,11 @@ const Candidate = require("~models/candidate");
 const Election = require("~models/election");
 const { NotFoundError, BadRequestError } = require("~common/error/httpError");
 const { checkIsValidId } = require("~common/checker/checkType");
-const { emailSchedule } = require("~batch/sendEmailOnTime");
+const { emailSchedule } = require("~batch/sendEmailSchedule");
 
 exports.addCandidate = async function ({ userId, electionId }) {
   checkIsValidId([userId, electionId]);
-
+  const today = new Date();
   const user = await User.findById(userId);
   if (!user) throw new NotFoundError(`找不到 userId : ${userId} 的用戶！`);
 
@@ -24,7 +24,11 @@ exports.addCandidate = async function ({ userId, electionId }) {
   const activationOfElectionCheck = await Candidate.find({
     electionId,
   }).count();
-  if (activationOfElectionCheck > 1 && election.isActivated === false) {
+  if (
+    activationOfElectionCheck > 1 &&
+    election.isActivated === false &&
+    today > election.startDate()
+  ) {
     await election.updateOne({ isActivated: true });
     await emailSchedule();
   }
