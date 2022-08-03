@@ -1,5 +1,5 @@
 const { BadRequestError } = require("~common/error/httpError");
-const { subtractHours } = require("~common/helper/subtracHours");
+const { subtractHours } = require("~common/helper/subtractHours");
 const Election = require("~models/election");
 exports.createElection = async function ({ startDate, endDate }) {
   let startDateToDb = subtractHours(8, new Date(startDate));

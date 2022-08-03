@@ -29,9 +29,9 @@ exports.vote = async function ({ userId, candidateId, electionId }) {
 
   await candidate.updateOne({ $push: { beVotedList: userId } });
 
-  const afterUser = await user.updateOne({
+  await user.updateOne({
     $push: { votedRecord: { electionId, candidateId } },
   });
 
-  return afterUser;
+  return { result: `成功投票給 userId: ${candidateId}` };
 };
